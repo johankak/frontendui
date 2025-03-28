@@ -76,7 +76,7 @@ export default defineConfig({
     proxy: {
       // Define proxy rules for API requests
       // Example: Requests to /api/gql are proxied to http://localhost:33001
-      '/api/gql': 'http://localhost:34001',
+      '/api/gql': 'http://localhost:33001',
     },
     watch: {
       // Specify paths to watch for changes
