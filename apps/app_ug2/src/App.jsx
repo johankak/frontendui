@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-l
+
 import { AppCanvas, createAsyncGraphQLAction } from '@hrbolek/uoisfrontend-gql-shared'
 // import { AppRouter } from './AppRouter';
 
