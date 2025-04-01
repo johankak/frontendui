@@ -2,11 +2,17 @@ import {
       createBrowserRouter,
       RouterProvider
 } from "react-router-dom";
+
+import { ProgramPage } from "@matejtresnak/provizorni_nazev_1";
   
-import { UserRouterSegment } from "@hrbolek/uoisfrontend-ug2";
+// import { UserRouterSegment } from "@hrbolek/uoisfrontend-ug2";
 
 export const Routes = [
-    UserRouterSegment
+    // UserRouterSegment
+    {
+        path: "/hello/:id",
+        element: <ProgramPage />
+    }
 ]
 
 // const router = createBrowserRouter(Routes, {basename: "/ug"});
