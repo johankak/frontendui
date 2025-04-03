@@ -102,7 +102,7 @@ export const ProgramPage = () => {
     const {id} = useParams()
     const program = {id}
 
-    return <div>Hello world {id}</div>
+    // return <div>Hello world {id}</div>
 
-    // return <ProgramPageContentLazy program={program} />
+    return <ProgramPageContentLazy program={program} />
 }
