@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create:component": "node scripts/createcomponent.js",
+    "create:component": "node scripts/createcomponent.js", 
     "create:scalar": "node scripts/createscalar.js",
     "build:apps": "npm workspaces foreach --include=apps/* npm run build",
     "publish:packages": "npm workspaces foreach --include=packages/* npm publish --access public"

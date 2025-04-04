@@ -14,6 +14,6 @@ import { ProgramPage } from "./ProgramPage"
  * @property {JSX.Element} element - The React element (component) to render, in this case, <ProgramPage />.
  */
 export const ProgramRouterSegment = {
-    path: `/${ProgramURI}/:id`,
+    path: `/${ProgramURI}:id`,
     element: <ProgramPage />,
 }

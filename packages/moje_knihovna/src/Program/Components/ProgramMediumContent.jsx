@@ -24,6 +24,7 @@
 export const ProgramMediumContent = ({program, children}) => {
     return (
         <>
+            DEMONSTRACE {program.name} <br />
             ProgramMediumContent <br />
             {JSON.stringify(program)}
             {children}
