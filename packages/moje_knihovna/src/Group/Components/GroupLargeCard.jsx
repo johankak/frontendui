@@ -35,7 +35,16 @@ export const GroupLargeCard = ({group, children}) => {
                     <GroupMediumCard group={group}/>
                 </LeftColumn>
                 <MiddleColumn>
-                    {children}
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
+                    <GroupCardCapsule group={group}/>
                 </MiddleColumn>
             </Row>
         </GroupCardCapsule>
