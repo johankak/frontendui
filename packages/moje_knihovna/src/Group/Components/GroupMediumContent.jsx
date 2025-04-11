@@ -24,8 +24,53 @@
 export const GroupMediumContent = ({group, children}) => {
     return (
         <>
-            GroupMediumContent <br />
-            {JSON.stringify(group)}
+            <h2>Stránka (studijní) skupiny</h2>
+            <p><strong>Skupina:</strong> {group.name}</p>
+
+
+
+            <h3>Zobrazení nadřízených skupin</h3>
+            <ul>
+                {group.parentGroups && group.parentGroups.length > 0 ? (
+                    group.parentGroups.map((parentGroup, index) => (
+                        <li key={index}>{parentGroup.name}</li>
+                    ))
+                ) : (
+                    <p>Žádné nadřízené skupiny</p>
+                )}
+            </ul>
+
+            <h3>Zobrazení vedoucích (rolí)</h3>
+            <ul>
+                {group.roles && group.roles.length > 0 ? (
+                    group.roles.map((role, index) => (
+                        <li key={index}>{role.name}</li>
+                    ))
+                ) : (
+                    <p>Žádní vedoucí (rolí)</p>
+                )}
+            </ul>
+
+            <h3>Správa členů</h3>
+            <p>Možnost správy členů této skupiny.</p>
+
+            <h3>Správa rolí</h3>
+            <p>Možnost správy rolí této skupiny.</p>
+
+            {/* Zobrazení rolí */}
+            <h3>Role</h3>
+            <ul>
+                {group.roles && group.roles.length > 0 ? (
+                    group.roles.map((role, index) => (
+                        <li key={index}>{role.name}</li>
+                    ))
+                ) : (
+                    <p>Žádné role</p>
+                )}
+            </ul>
+
+
+            <br />
             {children}
         </>
     )

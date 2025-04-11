@@ -35,16 +35,20 @@ export const GroupLargeCard = ({group, children}) => {
                     <GroupMediumCard group={group}/>
                 </LeftColumn>
                 <MiddleColumn>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
-                    <GroupCardCapsule group={group}/>
+                    {/* Členové skupiny */}
+                    <h3>Členové skupiny</h3>
+                    <ul>
+                        {group.members && group.members.length > 0 ? (
+                            group.members.map((member, index) => (
+                                <li key={index}>{member.name}</li>
+                            ))
+                        ) : (
+                            <p>Žádní členové</p>
+                        )}
+                    </ul>
+
+                    {/* Další obsah, pokud něco předáváš jako children */}
+                    {children}
                 </MiddleColumn>
             </Row>
         </GroupCardCapsule>
