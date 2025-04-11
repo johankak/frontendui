@@ -1,3 +1,5 @@
+import { GroupMediumCard } from "./GroupMediumCard"
+
 /**
  * A component that displays medium-level content for an group entity.
  *
@@ -38,6 +40,7 @@ export const GroupMediumContent = ({group, children}) => {
                 ) : (
                     <p>Žádné nadřízené skupiny</p>
                 )}
+                {group?.mastergroup && <GroupMediumCard group={group.mastergroup} />}
             </ul>
 
             <h3>Zobrazení vedoucích (rolí)</h3>
