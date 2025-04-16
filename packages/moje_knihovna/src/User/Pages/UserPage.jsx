@@ -3,7 +3,7 @@ import { useParams } from "react-router"
 
 import { CreateDelayer, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared"
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared"
-import { UserLargeCard } from "../Components"
+import { StateMachineManagement, UserLargeCard } from "../Components"
 import { UserReadAsyncAction } from "../Queries"
 import { UserPageNavbar } from "./UserPageNavbar"
 
@@ -31,6 +31,7 @@ const UserPageContent = ({user}) => {
     return (<>
         <UserPageNavbar user={user} />
         <UserLargeCard user={user}>
+            <StateMachineManagement user={user}/>
             User {JSON.stringify(user)}
         </UserLargeCard>
     </>)

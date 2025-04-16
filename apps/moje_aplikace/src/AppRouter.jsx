@@ -5,6 +5,7 @@ import {
 
 import { GroupRouterSegment } from "@matejtresnak/provizorni_nazev_1";
 import { GroupPage } from "@matejtresnak/provizorni_nazev_1";
+import { DataGeneratorPage } from "@matejtresnak/provizorni_nazev_1";
 // import { UserRouterSegment } from "@hrbolek/uoisfrontend-ug2";
 
 // import { UserPage } from "@hrbolek/uoisfrontend-ug";
@@ -79,6 +80,10 @@ const Routes = [
     {
         path: `/group/group/view/:id`,
         element: <GroupPage />,
+    },
+    {
+        path: '/group/data/random',
+        element: <DataGeneratorPage />,
     }
 ];
 
