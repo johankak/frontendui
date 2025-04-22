@@ -23,7 +23,7 @@ export const DataGeneratorPage = () => {
     return (
         <div>
             Tlacitko<br/>
-            <button onClick={() => fetch({name: "ahojky"})}>Insert</button><br/>
+            <button onClick={() => fetch({name: "cusbus"})}>Insert</button><br/>
             {loading && <div>Loading...</div>}
             {error && <div>Error: {error.message}</div>}
             {entity && <div>Inserted: {JSON.stringify(entity)}</div>}
