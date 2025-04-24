@@ -31,7 +31,6 @@ const UserPageContent = ({user}) => {
     return (<>
         <UserPageNavbar user={user} />
         <UserLargeCard user={user}>
-            <StateMachineManagement user={user}/>
             User {JSON.stringify(user)}
         </UserLargeCard>
     </>)

@@ -7,7 +7,6 @@ fragment UserLink on UserGQLModel {
   id
   lastchange
   name
-  nameEn
 }
 `)
 
