@@ -35,6 +35,7 @@ export const UserLargeCard = ({user, children}) => {
                     <UserMediumCard user={user}/>
                 </LeftColumn>
                 <MiddleColumn>
+                    <pre>{JSON.stringify(user, null, 2)}</pre>
                     {children}
                 </MiddleColumn>
             </Row>

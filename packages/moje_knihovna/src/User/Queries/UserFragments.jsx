@@ -7,6 +7,14 @@ fragment UserLink on UserGQLModel {
   id
   lastchange
   name
+  surname
+  memberships {
+    
+      group {
+        name
+      }
+      id
+    }
 }
 `)
 
