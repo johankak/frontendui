@@ -55,6 +55,8 @@ export const GroupLargeCard = ({group, children}) => {
                         <p>Tato skupina nemá žádné členy.</p>
                     )}
 
+                    <pre>{JSON.stringify(group, null, 2)}</pre>
+
                     {/* Další obsah, pokud něco předáváš jako children */}
                     {children}
                 </MiddleColumn>
