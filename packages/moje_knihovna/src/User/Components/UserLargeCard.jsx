@@ -2,6 +2,8 @@ import Row from "react-bootstrap/Row"
 import { LeftColumn, MiddleColumn } from "@hrbolek/uoisfrontend-shared"
 import { UserCardCapsule } from "./UserCardCapsule"
 import { UserMediumCard } from "./UserMediumCard"
+// import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared"
+// import { UserUpdateAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
 
 /**
  * A large card component for displaying detailed content and layout for an user entity.
@@ -37,8 +39,25 @@ export const UserLargeCard = ({user, children}) => {
                 <MiddleColumn>
                     <pre>{JSON.stringify(user, null, 2)}</pre>
                     {children}
+                    {/* <UserEmailEdit user={user}/> */}
                 </MiddleColumn>
             </Row>
         </UserCardCapsule>
     )
 }
+
+// export const UserEmailEdit = ({user}) => {
+//     const { loading, error, fetch } = useAsyncAction(UserUpdateAsyncAction, {}, {deferred: true});
+//     const onChange = (e) => {
+//         const email = e.target.value;
+//         const newUser = {...user, email};
+//         fetch(newUser);
+//     }
+//     return (
+//         <div>
+//             {loading && <p>Loading...</p>}
+//             {error && <p>Error: {error.message}</p>}
+//             <input type="text" value={user.email} onChange={onChange} placeholder="Enter new email" />
+//         </div>
+//     )
+// }
