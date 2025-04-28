@@ -9,25 +9,30 @@ const InsertStateMachineAsyncAction = createAsyncGraphQLAction(
       msg
       input
     }
-  	...StateMachineMedium
+    ...StateMachineMedium
   }
 }
 
 fragment StateMachineMedium on StateMachineGQLModel {
   id
   name
-}`);
+}`
+)
 
 export const StateMachineManagement = () => {
-    const {loading, error, entity, fetch} = useAsyncAction(InsertStateMachineAsyncAction, {name: "test"}, {deferred: true})
-    return (
-        <div>
-            Tlacitko<br/>
-            Tlacitko<br/>
-            <button onClick={() => fetch({name: "Test"})}>Insert</button><br/>
-            {loading && <div>Loading...</div>}
-            {error && <div>Error: {error.message}</div>}
-            {entity && <div>Inserted: {JSON.stringify(entity)}</div>}
-        </div>
-    )
+    const { loading, error, entity, fetch } = useAsyncAction(InsertStateMachineAsyncAction, {name: "Test"}, {deffered: true})
+    const Insert5 = () => {
+        for(let i = 0; i < 5; i++) {
+            fetch({name: "Test" + i})
+        }
+    }
+    return ( 
+    <div>
+        Tlacitko< br />
+        Tlacitko <br />
+        <button onClick={Insert5}>Insert</button><br />
+        {loading && <div>Loading...</div>}
+        {error && <div>Error: {error.message}</div>}
+        {entity && <div>Inserted: {JSON.stringify(entity)}</div>}
+    </div>)
 }

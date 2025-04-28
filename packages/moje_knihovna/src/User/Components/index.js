@@ -9,3 +9,4 @@ export * from './UserMediumCard'
 export * from './UserMediumEditableContent'
 
 export * from './StateMachineManagement'
+export * from './UserData'
