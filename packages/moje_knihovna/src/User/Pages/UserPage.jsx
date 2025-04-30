@@ -37,7 +37,6 @@ const UserPageContent = ({user}) => {
             <UserButton operation="U" user={user} className="btn btn-primary">Upravit</UserButton>
             <StateMachineManagement user={user} />
             <UserData user={user} />
-            <UserData user={user} />
             
             <pre>{JSON.stringify(user, null, 2)}</pre> 
         </UserLargeCard>

@@ -29,7 +29,6 @@ export const StateMachineManagement = () => {
     return ( 
     <div>
         Tlacitko< br />
-        Tlacitko <br />
         <button onClick={Insert5}>Insert</button><br />
         {loading && <div>Loading...</div>}
         {error && <div>Error: {error.message}</div>}
