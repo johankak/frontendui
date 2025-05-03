@@ -27,7 +27,7 @@ fragment GroupLarge on GroupGQLModel {
     id
     name
   }
-  memberships(where: {valid: {_eq: true}}) {
+  memberships(limit: 100) {
     __typename
     id
     valid
