@@ -3,7 +3,8 @@ import { ButtonWithDialog, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfro
 // import { UpdateGroupButton } from "./CUDButtons/UpdateGroupButton";
 // import { DeleteGroupButton } from "./CUDButtons/DeleteGroupButton";
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
-
+import { GroupInsertAsyncAction, GroupUpdateAsyncAction, GroupDeleteAsyncAction } from 'C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries';
+import { GroupMediumEditableContent } from "./GroupMediumEditableContent";
 /**
  * GroupCUDButton Component
  *
@@ -67,12 +68,12 @@ import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
  *
  * @returns {JSX.Element} The dynamically selected button component for the specified operation.
  */
-export const GroupButton = ({ operation, children, group, onDone = () => {}, ...props }) => {
+export const GroupCUDButton = ({ operation, children, group, onDone = () => {}, ...props }) => {
     const operationConfig = {
         C: {
             asyncAction: GroupInsertAsyncAction,
-            dialogTitle: "Vložit novou group",
-            loadingMsg: "Vkládám novou group",
+            dialogTitle: "Vložit noveho clena",
+            loadingMsg: "Vkládám noveho clena",
             renderContent: () => <GroupMediumEditableContent group={group} />,
         },
         U: {

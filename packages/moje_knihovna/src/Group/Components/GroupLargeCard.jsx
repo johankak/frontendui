@@ -1,7 +1,13 @@
-import Row from "react-bootstrap/Row"
-import { LeftColumn, MiddleColumn } from "@hrbolek/uoisfrontend-shared"
-import { GroupCardCapsule } from "./GroupCardCapsule"
-import { GroupMediumCard } from "./GroupMediumCard"
+import Row from "react-bootstrap/Row";
+import { LeftColumn, MiddleColumn } from "@hrbolek/uoisfrontend-shared";
+import { GroupCardCapsule } from "./GroupCardCapsule";
+import { GroupMediumCard } from "./GroupMediumCard";
+import { useState } from "react";
+import { Input, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared";
+import Button from "react-bootstrap/Button";
+import { GroupCUDButton } from "./GroupCUDButton";
+import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
+import { GroupMembershipInsertAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipInsertAsyncAction";
 
 /**
  * A large card component for displaying detailed content and layout for an group entity.
@@ -21,46 +27,99 @@ import { GroupMediumCard } from "./GroupMediumCard"
  * @returns {JSX.Element} A JSX element combining a large card layout with dynamic content.
  */
 export const GroupLargeCard = ({group, children}) => {
-    return (
-        <GroupCardCapsule group={group} >
-            <Row>
-                <LeftColumn>
-                    <GroupMediumCard group={group}/>
-                </LeftColumn>
-                <MiddleColumn>
-                    {/* Seznam členů skupiny */}
-                    <h3>Seznam členů skupiny</h3>
-                    {group.memberships && group.memberships.length > 0 ? (
-                        <div className="member-list">
-                            <table className="table">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Jméno</th>
-                                        <th>Email</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {group.memberships.map(membership => (
-                                        <tr key={membership.id}>
-                                            <td>{membership.user.id}</td>
-                                            <td>{`${membership.user.name} ${membership.user.surname}`}</td>
-                                            <td>{membership.user.email}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    ) : (
-                        <p>Tato skupina nemá žádné členy.</p>
-                    )}
+  const [userId, setUserId] = useState("");
+  
+  // Použití GroupMembershipInsertAsyncAction pro přidání uživatele do skupiny
+  const { error, loading, fetch } = useAsyncAction(GroupMembershipInsertAsyncAction, {}, { deferred: true });
 
-                    <pre>{JSON.stringify(group, null, 2)}</pre>
+  const handleAddUserToGroup = async () => {
+    if (!userId) {
+      alert("Prosím zadejte UUID uživatele");
+      return;
+    }
 
-                    {/* Další obsah, pokud něco předáváš jako children */}
-                    {children}
-                </MiddleColumn>
-            </Row>
-        </GroupCardCapsule>
-    )
-}
+    try {
+      const params = {
+        groupId: group.id,
+        userId: userId
+      };
+      
+      const result = await fetch(params);
+      
+      if (result && !result.failed) {
+        alert("Uživatel byl úspěšně přidán do skupiny");
+        setUserId("");
+        window.location.reload();
+      } else if (result && result.failed) {
+        alert(`Chyba: ${result.msg || "Nepodařilo se přidat uživatele do skupiny"}`);
+      }
+    } catch (error) {
+      console.error("Chyba při přidávání uživatele:", error);
+      alert("Došlo k chybě při přidávání uživatele do skupiny");
+    }
+  };
+
+  return (
+    <GroupCardCapsule group={group} >
+      <Row>
+        <LeftColumn>
+          <GroupMediumCard group={group}/>
+        </LeftColumn>
+        <MiddleColumn>
+          {/* Seznam členů skupiny */}
+          <h3>Seznam členů skupiny</h3>
+          {group.memberships && group.memberships.length > 0 ? (
+            <div className="member-list">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Jméno</th>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {group.memberships.map(membership => (
+                    <tr key={membership.id}>
+                      <td>{membership.user.id}</td>
+                      <td>{`${membership.user.name} ${membership.user.surname}`}</td>
+                      <td>{membership.user.email}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p>Tato skupina nemá žádné členy.</p>
+          )}
+
+          {/* Formulář pro přidání existujícího uživatele podle UUID */}
+          <div className="mt-6 space-y-2">
+            <h4 className="text-lg font-semibold">Přidat existujícího uživatele do skupiny</h4>
+            
+            {error && <ErrorHandler errors={error} />}
+            {loading && <LoadingSpinner text="Přidávám uživatele do skupiny..." />}
+            
+            <Input
+              placeholder="UUID uživatele"
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+            />
+
+            <Button
+              onClick={handleAddUserToGroup}
+              disabled={loading}
+            >
+              Přidat uživatele do skupiny
+            </Button>
+          </div>
+
+          <pre>{JSON.stringify(group, null, 2)}</pre>
+
+          {/* Další obsah, pokud něco předáváš jako children */}
+          {children}
+        </MiddleColumn>
+      </Row>
+    </GroupCardCapsule>
+  );
+};

@@ -26,8 +26,8 @@ import { Input } from "@hrbolek/uoisfrontend-shared"
 export const GroupMediumEditableContent = ({group, onChange=(e)=>null, onBlur=(e)=>null, children}) => {
     return (
         <>           
-            <Input id={"name"} label={"Název"} className="form-control" defaultValue={group?.name|| "Název"} onChange={onChange} onBlur={onBlur} />
-            <Input id={"name_en"} label={"Anglický název"} className="form-control" defaultValue={group?.name_en|| "Anglický název"} onChange={onChange} onBlur={onBlur} />
+            <Input id={"name"} label={"Jmeno"} className="form-control" defaultValue={group?.name|| "name"} onChange={onChange} onBlur={onBlur} />
+            <Input id={"surname"} label={"Prijmeni"} className="form-control" defaultValue={group?.name_en|| "Anglický název"} onChange={onChange} onBlur={onBlur} />
             {children}
         </>
     )
