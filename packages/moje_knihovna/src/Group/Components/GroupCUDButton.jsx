@@ -4,7 +4,7 @@ import { ButtonWithDialog, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfro
 // import { DeleteGroupButton } from "./CUDButtons/DeleteGroupButton";
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
 import { GroupInsertAsyncAction, GroupUpdateAsyncAction, GroupDeleteAsyncAction } from 'C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries';
-import { GroupMediumEditableContent } from "./GroupMediumEditableContent";
+// import 
 /**
  * GroupCUDButton Component
  *
@@ -72,8 +72,8 @@ export const GroupCUDButton = ({ operation, children, group, onDone = () => {}, 
     const operationConfig = {
         C: {
             asyncAction: GroupInsertAsyncAction,
-            dialogTitle: "Vložit noveho clena",
-            loadingMsg: "Vkládám noveho clena",
+            dialogTitle: "Vložit novou group",
+            loadingMsg: "Vkládám novou group",
             renderContent: () => <GroupMediumEditableContent group={group} />,
         },
         U: {
