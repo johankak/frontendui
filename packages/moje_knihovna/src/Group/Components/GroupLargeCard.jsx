@@ -5,32 +5,25 @@ import { GroupMediumCard } from "./GroupMediumCard";
 import { useState } from "react";
 import { Input, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared";
 import Button from "react-bootstrap/Button";
-import { GroupCUDButton } from "./GroupCUDButton";
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
 import { GroupMembershipInsertAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipInsertAsyncAction";
+import { GroupUpdateAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupUpdateAsyncAction";
 
-/**
- * A large card component for displaying detailed content and layout for an group entity.
- *
- * This component wraps an `GroupCardCapsule` with a flexible layout that includes multiple
- * columns. It uses a `Row` layout with a `LeftColumn` for displaying an `GroupMediumCard`
- * and a `MiddleColumn` for rendering a list of group members and additional children.
- *
- * @component
- * @param {Object} props - The properties for the GroupLargeCard component.
- * @param {Object} props.group - The object representing the group entity.
- * @param {string|number} props.group.id - The unique identifier for the group entity.
- * @param {string} props.group.name - The name or label of the group entity.
- * @param {Array} [props.group.memberships] - Array of group memberships.
- * @param {React.ReactNode} [props.children=null] - Additional content to render in the middle column.
- *
- * @returns {JSX.Element} A JSX element combining a large card layout with dynamic content.
- */
-export const GroupLargeCard = ({group, children}) => {
+export const GroupLargeCard = ({ group, children }) => {
   const [userId, setUserId] = useState("");
-  
-  // Použití GroupMembershipInsertAsyncAction pro přidání uživatele do skupiny
-  const { error, loading, fetch } = useAsyncAction(GroupMembershipInsertAsyncAction, {}, { deferred: true });
+  const [newGroupName, setNewGroupName] = useState("");
+
+  const {
+    error: insertError,
+    loading: insertLoading,
+    fetch: insertUser,
+  } = useAsyncAction(GroupMembershipInsertAsyncAction, {}, { deferred: true });
+
+  const {
+    error: updateError,
+    loading: updateLoading,
+    fetch: updateGroup,
+  } = useAsyncAction(GroupUpdateAsyncAction, {}, { deferred: true });
 
   const handleAddUserToGroup = async () => {
     if (!userId) {
@@ -41,11 +34,11 @@ export const GroupLargeCard = ({group, children}) => {
     try {
       const params = {
         groupId: group.id,
-        userId: userId
+        userId: userId,
       };
-      
-      const result = await fetch(params);
-      
+
+      const result = await insertUser(params);
+
       if (result && !result.failed) {
         alert("Uživatel byl úspěšně přidán do skupiny");
         setUserId("");
@@ -59,11 +52,39 @@ export const GroupLargeCard = ({group, children}) => {
     }
   };
 
+  const handleGroupNameChange = async () => {
+    if (!newGroupName) {
+      alert("Zadejte nový název skupiny.");
+      return;
+    }
+
+    try {
+      const params = {
+        id: group.id,
+        lastchange: group.lastchange,
+        name: newGroupName,
+      };
+
+      const result = await updateGroup(params);
+
+      if (result && !result.failed) {
+        alert("Název skupiny byl úspěšně změněn.");
+        setNewGroupName("");
+        window.location.reload();
+      } else {
+        alert(`Chyba: ${result?.msg || "Nepodařilo se změnit název skupiny."}`);
+      }
+    } catch (err) {
+      console.error("Chyba při změně názvu skupiny:", err);
+      alert("Došlo k chybě při změně názvu skupiny.");
+    }
+  };
+
   return (
-    <GroupCardCapsule group={group} >
+    <GroupCardCapsule group={group}>
       <Row>
         <LeftColumn>
-          <GroupMediumCard group={group}/>
+          <GroupMediumCard group={group} />
         </LeftColumn>
         <MiddleColumn>
           {/* Seznam členů skupiny */}
@@ -79,7 +100,7 @@ export const GroupLargeCard = ({group, children}) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {group.memberships.map(membership => (
+                  {group.memberships.map((membership) => (
                     <tr key={membership.id}>
                       <td>{membership.user.id}</td>
                       <td>{`${membership.user.name} ${membership.user.surname}`}</td>
@@ -93,30 +114,45 @@ export const GroupLargeCard = ({group, children}) => {
             <p>Tato skupina nemá žádné členy.</p>
           )}
 
-          {/* Formulář pro přidání existujícího uživatele podle UUID */}
+          {/* Formulář pro přidání uživatele */}
           <div className="mt-6 space-y-2">
             <h4 className="text-lg font-semibold">Přidat existujícího uživatele do skupiny</h4>
-            
-            {error && <ErrorHandler errors={error} />}
-            {loading && <LoadingSpinner text="Přidávám uživatele do skupiny..." />}
-            
+
+            {insertError && <ErrorHandler errors={insertError} />}
+            {insertLoading && <LoadingSpinner text="Přidávám uživatele do skupiny..." />}
+
             <Input
               placeholder="UUID uživatele"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
             />
 
-            <Button
-              onClick={handleAddUserToGroup}
-              disabled={loading}
-            >
+            <Button onClick={handleAddUserToGroup} disabled={insertLoading}>
               Přidat uživatele do skupiny
+            </Button>
+          </div>
+
+          {/* Formulář pro změnu názvu skupiny */}
+          <div className="mt-6 space-y-2">
+            <h4 className="text-lg font-semibold">Změnit název studijní skupiny</h4>
+
+            {updateError && <ErrorHandler errors={updateError} />}
+            {updateLoading && <LoadingSpinner text="Aktualizuji název skupiny..." />}
+
+            <Input
+              placeholder="Nový název skupiny"
+              value={newGroupName}
+              onChange={(e) => setNewGroupName(e.target.value)}
+            />
+
+            <Button onClick={handleGroupNameChange} disabled={updateLoading}>
+              Změnit název skupiny
             </Button>
           </div>
 
           <pre>{JSON.stringify(group, null, 2)}</pre>
 
-          {/* Další obsah, pokud něco předáváš jako children */}
+          {/* Další obsah */}
           {children}
         </MiddleColumn>
       </Row>
