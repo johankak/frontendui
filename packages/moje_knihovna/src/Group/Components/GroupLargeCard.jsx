@@ -233,6 +233,7 @@ export const GroupLargeCard = ({ group, children }) => {
           </div>
 
           {/* Další obsah */}
+          <pre>{JSON.stringify(group, null, 2)}</pre>
           {children}
         </MiddleColumn>
       </Row>
