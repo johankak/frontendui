@@ -5,13 +5,16 @@ import { GroupMediumCard } from "./GroupMediumCard";
 import { useState } from "react";
 import { Input, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
 import { GroupMembershipInsertAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipInsertAsyncAction";
 import { GroupUpdateAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupUpdateAsyncAction";
+import { GroupMembershipDeleteAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipDeleteAsyncAction";
 
 export const GroupLargeCard = ({ group, children }) => {
   const [userId, setUserId] = useState("");
   const [newGroupName, setNewGroupName] = useState("");
+  const [selectedMembership, setSelectedMembership] = useState("");
 
   const {
     error: insertError,
@@ -24,6 +27,12 @@ export const GroupLargeCard = ({ group, children }) => {
     loading: updateLoading,
     fetch: updateGroup,
   } = useAsyncAction(GroupUpdateAsyncAction, {}, { deferred: true });
+  
+  const {
+    error: deleteError,
+    loading: deleteLoading,
+    fetch: deleteMembership,
+  } = useAsyncAction(GroupMembershipDeleteAsyncAction, {}, { deferred: true });
 
   const handleAddUserToGroup = async () => {
     if (!userId) {
@@ -79,6 +88,51 @@ export const GroupLargeCard = ({ group, children }) => {
       alert("Došlo k chybě při změně názvu skupiny.");
     }
   };
+  
+  const handleRemoveUserFromGroup = async () => {
+    if (!selectedMembership) {
+      alert("Prosím vyberte uživatele, kterého chcete odebrat ze skupiny.");
+      return;
+    }
+    
+    // Najít vybrané členství podle ID
+    const membershipToDelete = group.memberships.find(m => m.id === selectedMembership);
+    
+    if (!membershipToDelete) {
+      alert("Vybrané členství nebylo nalezeno.");
+      return;
+    }
+    
+    if (!window.confirm(`Opravdu chcete odebrat uživatele ${membershipToDelete.user.name} ${membershipToDelete.user.surname} ze skupiny?`)) {
+      return;
+    }
+    
+    try {
+      const params = {
+        id: membershipToDelete.id,
+        lastchange: membershipToDelete.lastchange
+      };
+      
+      const result = await deleteMembership(params);
+      const deleteResult = result.data?.membershipDelete;
+      
+      // Kontrola odpovědi podle správného typu
+      if (deleteResult?.__typename === "MembershipGQLModel") {
+        alert("Uživatel byl úspěšně odebrán ze skupiny.");
+        setSelectedMembership("");
+        window.location.reload();
+      } else if (deleteResult?.__typename === "MembershipGQLModelDeleteError") {
+        console.error("Chyba při odebírání uživatele:", deleteResult.msg);
+        alert(`Nepodařilo se odebrat uživatele ze skupiny: ${deleteResult.msg || "Neznámá chyba"}`);
+      } else {
+        console.error("Neočekávaná odpověď:", result);
+        alert("Nepodařilo se odebrat uživatele ze skupiny. Zkontrolujte konzoli pro více informací.");
+      }
+    } catch (error) {
+      console.error("Chyba při odebírání uživatele ze skupiny:", error);
+      alert("Došlo k chybě při odebírání uživatele ze skupiny.");
+    }
+  };
 
   return (
     <GroupCardCapsule group={group}>
@@ -131,6 +185,38 @@ export const GroupLargeCard = ({ group, children }) => {
               Přidat uživatele do skupiny
             </Button>
           </div>
+          
+          {/* Formulář pro odebrání uživatele */}
+          <div className="mt-6 space-y-2">
+            <h4 className="text-lg font-semibold">Odebrat uživatele ze skupiny</h4>
+            
+            {deleteError && <ErrorHandler errors={deleteError} />}
+            {deleteLoading && <LoadingSpinner text="Odebírám uživatele ze skupiny..." />}
+            
+            <Form.Group>
+              <Form.Label>Vyberte uživatele k odebrání</Form.Label>
+              <Form.Control
+                as="select"
+                value={selectedMembership}
+                onChange={(e) => setSelectedMembership(e.target.value)}
+              >
+                <option value="">Vyberte uživatele...</option>
+                {group.memberships && group.memberships.map((membership) => (
+                  <option key={membership.id} value={membership.id}>
+                    {`${membership.user.name} ${membership.user.surname} (${membership.user.email})`}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            
+            <Button 
+              variant="danger" 
+              onClick={handleRemoveUserFromGroup} 
+              disabled={deleteLoading || !selectedMembership}
+            >
+              Odebrat uživatele ze skupiny
+            </Button>
+          </div>
 
           {/* Formulář pro změnu názvu skupiny */}
           <div className="mt-6 space-y-2">
@@ -149,8 +235,6 @@ export const GroupLargeCard = ({ group, children }) => {
               Změnit název skupiny
             </Button>
           </div>
-
-          <pre>{JSON.stringify(group, null, 2)}</pre>
 
           {/* Další obsah */}
           {children}

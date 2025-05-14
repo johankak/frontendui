@@ -40,6 +40,7 @@ fragment GroupLarge on GroupGQLModel {
       surname
       email
     }
+    lastchange
   }
 }
 `, GroupMediumFragment)
