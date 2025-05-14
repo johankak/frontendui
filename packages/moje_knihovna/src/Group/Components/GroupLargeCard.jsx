@@ -114,18 +114,14 @@ export const GroupLargeCard = ({ group, children }) => {
       };
       
       const result = await deleteMembership(params);
-      const deleteResult = result.data?.membershipDelete;
       
-      // Kontrola odpovědi podle správného typu
-      if (deleteResult?.__typename === "MembershipGQLModel") {
+      // Zjednodušená kontrola odpovědi - null znamená úspěch
+      if (result && result.data && result.data.membershipDelete === null) {
         alert("Uživatel byl úspěšně odebrán ze skupiny.");
         setSelectedMembership("");
         window.location.reload();
-      } else if (deleteResult?.__typename === "MembershipGQLModelDeleteError") {
-        console.error("Chyba při odebírání uživatele:", deleteResult.msg);
-        alert(`Nepodařilo se odebrat uživatele ze skupiny: ${deleteResult.msg || "Neznámá chyba"}`);
       } else {
-        console.error("Neočekávaná odpověď:", result);
+        console.warn("Neočekávaná odpověď:", result);
         alert("Nepodařilo se odebrat uživatele ze skupiny. Zkontrolujte konzoli pro více informací.");
       }
     } catch (error) {
