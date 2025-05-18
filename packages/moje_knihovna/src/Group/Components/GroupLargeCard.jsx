@@ -89,28 +89,20 @@ export const GroupLargeCard = ({ group, children }) => {
     }
   };
   
-  const handleRemoveUserFromGroup = async () => {
-    if (!selectedMembership) {
-      alert("Prosím vyberte uživatele, kterého chcete odebrat ze skupiny.");
+  const handleRemoveUserFromGroup = async (membershipId, membershipLastchange, userName) => {
+    if (!membershipId) {
+      alert("Nebyl vybrán žádný uživatel k odebrání.");
       return;
     }
     
-    // Najít vybrané členství podle ID
-    const membershipToDelete = group.memberships.find(m => m.id === selectedMembership);
-    
-    if (!membershipToDelete) {
-      alert("Vybrané členství nebylo nalezeno.");
-      return;
-    }
-    
-    if (!window.confirm(`Opravdu chcete odebrat uživatele ${membershipToDelete.user.name} ${membershipToDelete.user.surname} ze skupiny?`)) {
+    if (!window.confirm(`Opravdu chcete odebrat uživatele ${userName} ze skupiny?`)) {
       return;
     }
     
     try {
       const params = {
-        id: membershipToDelete.id,
-        lastchange: membershipToDelete.lastchange
+        id: membershipId,
+        lastchange: membershipLastchange
       };
       
       const result = await deleteMembership(params);
@@ -130,6 +122,24 @@ export const GroupLargeCard = ({ group, children }) => {
     }
   };
 
+  const handleRemoveSelectedUser = async () => {
+    if (!selectedMembership) {
+      alert("Prosím vyberte uživatele, kterého chcete odebrat ze skupiny.");
+      return;
+    }
+    
+    // Najít vybrané členství podle ID
+    const membershipToDelete = group.memberships.find(m => m.id === selectedMembership);
+    
+    if (!membershipToDelete) {
+      alert("Vybrané členství nebylo nalezeno.");
+      return;
+    }
+    
+    const userName = `${membershipToDelete.user.name} ${membershipToDelete.user.surname}`;
+    handleRemoveUserFromGroup(membershipToDelete.id, membershipToDelete.lastchange, userName);
+  };
+
   return (
     <GroupCardCapsule group={group}>
       <Row>
@@ -147,6 +157,7 @@ export const GroupLargeCard = ({ group, children }) => {
                     <th>ID</th>
                     <th>Jméno</th>
                     <th>Email</th>
+                    <th>Akce</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -155,6 +166,20 @@ export const GroupLargeCard = ({ group, children }) => {
                       <td>{membership.user.id}</td>
                       <td>{`${membership.user.name} ${membership.user.surname}`}</td>
                       <td>{membership.user.email}</td>
+                      <td>
+                        <Button 
+                          variant="danger" 
+                          size="sm"
+                          onClick={() => handleRemoveUserFromGroup(
+                            membership.id, 
+                            membership.lastchange, 
+                            `${membership.user.name} ${membership.user.surname}`
+                          )}
+                          disabled={deleteLoading}
+                        >
+                          Odebrat
+                        </Button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -207,7 +232,7 @@ export const GroupLargeCard = ({ group, children }) => {
             
             <Button 
               variant="danger" 
-              onClick={handleRemoveUserFromGroup} 
+              onClick={handleRemoveSelectedUser} 
               disabled={deleteLoading || !selectedMembership}
             >
               Odebrat uživatele ze skupiny
