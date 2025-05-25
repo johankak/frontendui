@@ -112,7 +112,9 @@ TESTOVACI UZIVATEL
 
 ADRESY
 http://localhost:5173/group/group/view/0d0810f7-b61b-43c2-a746-26800052b7d7
+
 http://localhost:5173/group/readonly/view/0d0810f7-b61b-43c2-a746-26800052b7d7
+
 http://localhost:5173/group/data/random
 
 
