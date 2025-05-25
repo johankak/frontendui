@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 import { ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared";
 import { useAsyncAction, createAsyncGraphQLAction, createQueryStrLazy } from "@hrbolek/uoisfrontend-gql-shared";
 
@@ -28,6 +29,16 @@ mutation GroupInsert($name: String!, $grouptypeId: UUID!) {
     ... on GroupGQLModel {
       id
       name
+      nameEn
+      lastchange
+      mastergroup {
+        id
+        name
+      }
+      grouptype {
+        id
+        name
+      }
     }
     ... on InsertError {
       input
@@ -41,6 +52,7 @@ mutation GroupInsert($name: String!, $grouptypeId: UUID!) {
 export const DataGeneratorPage = () => {
   const [name, setName] = useState("");
   const [groupTypeId, setGroupTypeId] = useState(groupTypes[0].id);
+  const [createdGroup, setCreatedGroup] = useState(null);
 
   const {
     fetch: insertGroup,
@@ -50,38 +62,102 @@ export const DataGeneratorPage = () => {
     createAsyncGraphQLAction(groupInsertQuery),
     {
       onSuccess: (data) => {
-        const result = data.data.groupInsert;
+        console.log("onSuccess spuštěn!");
+        console.log("Celá odpověď:", data);
+        const result = data?.data?.groupInsert;
+        console.log("Výsledek groupInsert:", result);
         if (result && result.id) {
-          alert("Skupina byla vytvořena: " + result.name);
+          console.log("Nastavujem createdGroup:", result);
+          setCreatedGroup(result);
           setName("");
         } else {
+          console.log("Podmínka result && result.id selhala");
           alert("Vytvoření skupiny selhalo.");
           console.warn("Neočekávaná odpověď:", data);
         }
       },
+      onError: (error) => {
+        console.log("onError spuštěn:", error);
+      },
+      onSettled: (data, error) => {
+        console.log("onSettled spuštěn - data:", data, "error:", error);
+      }
     },
     { deferred: true }
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    console.log("handleSubmit spuštěn");
     if (!name || !groupTypeId) {
       alert("Zadejte název skupiny a vyberte typ.");
       return;
     }
     
-    // Volání s GraphQL variables objektem
-    insertGroup({ 
-      name: name, 
-      grouptypeId: groupTypeId 
-    });
+    console.log("Odesílám data:", { name, grouptypeId: groupTypeId });
+    
+    // Vymazat předchozí výsledek
+    setCreatedGroup(null);
+    
+    try {
+      // Volání s GraphQL variables objektem
+      const result = await insertGroup({ 
+        name: name, 
+        grouptypeId: groupTypeId 
+      });
+      
+      console.log("Výsledek await insertGroup:", result);
+      
+      const groupResult = result?.data?.groupInsert;
+      console.log("groupInsert data:", groupResult);
+      
+      if (groupResult && groupResult.id) {
+        console.log("Nastavujem createdGroup:", groupResult);
+        setCreatedGroup(groupResult);
+        setName("");
+      } else {
+        alert("Vytvoření skupiny selhalo.");
+        console.warn("Neočekávaná odpověď:", result);
+      }
+    } catch (error) {
+      console.error("Chyba při vytváření skupiny:", error);
+      alert("Došlo k chybě při vytváření skupiny.");
+    }
+  };
+
+  const handleCreateNew = () => {
+    setCreatedGroup(null);
+    setName("");
   };
 
   return (
     <div className="container mt-4">
       <h3>Vytvoření nové skupiny</h3>
+      
+      <div className="mb-3">
+        <small>Debug: createdGroup = {createdGroup ? "má hodnotu" : "null"}</small>
+        {createdGroup && <small><br/>ID: {createdGroup.id}</small>}
+      </div>
 
       {insertError && <ErrorHandler errors={insertError} />}
       {inserting && <LoadingSpinner text="Vytvářím skupinu..." />}
+
+      {createdGroup && (
+        <Alert variant="success" className="mb-4">
+          <Alert.Heading>Skupina byla úspěšně vytvořena!</Alert.Heading>
+          <div className="mb-3">
+            <pre style={{ backgroundColor: '#f8f9fa', padding: '15px', borderRadius: '5px', fontSize: '14px' }}>
+              {JSON.stringify(createdGroup, null, 2)}
+            </pre>
+          </div>
+          <Button 
+            variant="outline-success" 
+            size="sm" 
+            onClick={handleCreateNew}
+          >
+            Vytvořit další skupinu
+          </Button>
+        </Alert>
+      )}
 
       <Form.Group className="mb-3">
         <Form.Label>Název skupiny</Form.Label>
