@@ -18,12 +18,13 @@ const groupTypes = [
   { id: "b1bedec8-931f-11ed-9b95-0242ac110002", name: "garance programu" },
 ];
 
-// Funkce pro vytvoření dotazu na vytvoření skupiny
-const getGroupInsertQuery = (name, groupTypeId) => createQueryStrLazy(`
-mutation {
+// GraphQL query s použitím variables
+const groupInsertQuery = createQueryStrLazy(`
+mutation GroupInsert($name: String!, $grouptypeId: UUID!) {
   groupInsert(
-    group: {name: "${name}", grouptypeId: "${groupTypeId}"}
+    group: {name: $name, grouptypeId: $grouptypeId}
   ) {
+    __typename
     ... on GroupGQLModel {
       id
       name
@@ -39,14 +40,14 @@ mutation {
 
 export const DataGeneratorPage = () => {
   const [name, setName] = useState("");
-  const [groupTypeId, setGroupTypeId] = useState(groupTypes[0].id); // výchozí hodnota
+  const [groupTypeId, setGroupTypeId] = useState(groupTypes[0].id);
 
   const {
     fetch: insertGroup,
     loading: inserting,
     error: insertError,
   } = useAsyncAction(
-    (params) => createAsyncGraphQLAction(getGroupInsertQuery(params.name, params.groupTypeId))(),
+    createAsyncGraphQLAction(groupInsertQuery),
     {
       onSuccess: (data) => {
         const result = data.data.groupInsert;
@@ -67,7 +68,12 @@ export const DataGeneratorPage = () => {
       alert("Zadejte název skupiny a vyberte typ.");
       return;
     }
-    insertGroup({ name, groupTypeId });
+    
+    // Volání s GraphQL variables objektem
+    insertGroup({ 
+      name: name, 
+      grouptypeId: groupTypeId 
+    });
   };
 
   return (
