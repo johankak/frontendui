@@ -8,6 +8,7 @@ import { GroupPage } from "@matejtresnak/provizorni_nazev_1";
 import { DataGeneratorPage } from "@matejtresnak/provizorni_nazev_1";
 import { UserRouterSegment } from "@matejtresnak/provizorni_nazev_1";
 import { UserPage } from "@matejtresnak/provizorni_nazev_1";
+import { ReadOnlyPage } from "@matejtresnak/provizorni_nazev_1";
 
 // import { UserPage } from "@hrbolek/uoisfrontend-ug";
 // import { UserStudiesPage } from "@hrbolek/uoisfrontend-granting";
@@ -89,6 +90,10 @@ const Routes = [
     {
         path: '/user/user/view/:id',
         element: <UserPage />,
+    },
+    {
+        path: '/group/readonly/view/:id',
+        element: <ReadOnlyPage />,
     }
 ];
 
