@@ -85,3 +85,35 @@
 
 ## zprovoznění změny názvu studijní skupiny
 - zprovoznění změny názvu nebyl žádný problém, využili jsme GroupUpdateAsyncAction
+
+___________________________________________
+
+TESTOVACI SKUPINA
+{
+  "__typename": "GroupGQLModel",
+  "id": "0d0810f7-b61b-43c2-a746-26800052b7d7",
+  "lastchange": "2024-09-08T15:27:11.981546",
+  "name": "12-5VK",
+  "nameEn": null,
+  "mastergroup": {
+    "id": "970cb398-6389-42c0-bbd1-872be83e2305",
+    "name": "Fakulta vojenské kybernetiky"
+  },
+  "memberships": [
+
+TESTOVACI UZIVATEL
+{
+  "__typename": "UserGQLModel",
+  "id": "c0f60e42-2a33-4ee2-a3f7-f017e30a0bcf",
+  "lastchange": "2025-05-25T06:40:14.414785",
+  "name": "Artur",
+  "surname": "Ludvík",
+  "memberships": [
+
+ADRESY
+http://localhost:5173/group/group/view/0d0810f7-b61b-43c2-a746-26800052b7d7
+http://localhost:5173/group/readonly/view/0d0810f7-b61b-43c2-a746-26800052b7d7
+http://localhost:5173/group/data/random
+
+
+
