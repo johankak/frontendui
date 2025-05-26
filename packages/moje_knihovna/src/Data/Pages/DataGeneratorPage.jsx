@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -18,6 +18,16 @@ const groupTypes = [
   { id: "0eb35718-615b-11ed-b753-0242ac120003", name: "studenti" },
   { id: "b1bedec8-931f-11ed-9b95-0242ac110002", name: "garance programu" },
 ];
+
+// GraphQL query pro načtení typů skupin
+const groupTypePageQuery = createQueryStrLazy(`
+query {
+  groupTypePage {
+    id
+    name
+  }
+}
+`);
 
 // GraphQL query s použitím variables
 const groupInsertQuery = createQueryStrLazy(`
@@ -51,8 +61,31 @@ mutation GroupInsert($name: String!, $grouptypeId: UUID!) {
 
 export const DataGeneratorPage = () => {
   const [name, setName] = useState("");
-  const [groupTypeId, setGroupTypeId] = useState(groupTypes[0].id);
+  const [groupTypeId, setGroupTypeId] = useState("");
   const [createdGroup, setCreatedGroup] = useState(null);
+  const [loadedGroupTypes, setLoadedGroupTypes] = useState(groupTypes);
+  const [usingFallback, setUsingFallback] = useState(true);
+
+  const {
+    fetch: loadGroupTypes,
+    loading: loadingGroupTypes,
+    error: groupTypesError,
+  } = useAsyncAction(
+    createAsyncGraphQLAction(groupTypePageQuery),
+    {
+      onSuccess: (data) => {
+        const types = data?.data?.groupTypePage;
+        if (types && Array.isArray(types)) {
+          setLoadedGroupTypes(types);
+          setUsingFallback(false);
+          if (types.length > 0 && !groupTypeId) {
+            setGroupTypeId(types[0].id);
+          }
+        }
+      },
+    },
+    { deferred: true }
+  );
 
   const {
     fetch: insertGroup,
@@ -85,6 +118,16 @@ export const DataGeneratorPage = () => {
     },
     { deferred: true }
   );
+
+  useEffect(() => {
+    loadGroupTypes();
+  }, []);
+
+  useEffect(() => {
+    if (loadedGroupTypes.length > 0 && !groupTypeId) {
+      setGroupTypeId(loadedGroupTypes[0].id);
+    }
+  }, [loadedGroupTypes, groupTypeId]);
 
   const handleSubmit = async () => {
     console.log("handleSubmit spuštěn");
@@ -136,10 +179,13 @@ export const DataGeneratorPage = () => {
       <div className="mb-3">
         <small>Debug: createdGroup = {createdGroup ? "má hodnotu" : "null"}</small>
         {createdGroup && <small><br/>ID: {createdGroup.id}</small>}
+        <br/>
+        <small>Typy skupin: {usingFallback ? "používám fallback data" : "načteno z backendu"}</small>
       </div>
 
       {insertError && <ErrorHandler errors={insertError} />}
-      {inserting && <LoadingSpinner text="Vytvářím skupinu..." />}
+      {groupTypesError && <ErrorHandler errors={groupTypesError} />}
+      {(inserting || loadingGroupTypes) && <LoadingSpinner text={inserting ? "Vytvářím skupinu..." : "Načítám typy skupin..."} />}
 
       {createdGroup && (
         <Alert variant="success" className="mb-4">
@@ -176,7 +222,7 @@ export const DataGeneratorPage = () => {
           value={groupTypeId}
           onChange={(e) => setGroupTypeId(e.target.value)}
         >
-          {groupTypes.map((type) => (
+          {loadedGroupTypes.map((type) => (
             <option key={type.id} value={type.id}>
               {type.name}
             </option>
@@ -184,7 +230,7 @@ export const DataGeneratorPage = () => {
         </Form.Control>
       </Form.Group>
 
-      <Button onClick={handleSubmit} disabled={inserting}>
+      <Button onClick={handleSubmit} disabled={inserting || loadingGroupTypes}>
         Vytvořit skupinu
       </Button>
     </div>
