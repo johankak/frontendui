@@ -3,7 +3,7 @@ import { ButtonWithDialog, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfro
 // import { UpdateGroupButton } from "./CUDButtons/UpdateGroupButton";
 // import { DeleteGroupButton } from "./CUDButtons/DeleteGroupButton";
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
-import { GroupInsertAsyncAction, GroupUpdateAsyncAction, GroupDeleteAsyncAction } from 'C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries';
+import { GroupInsertAsyncAction, GroupUpdateAsyncAction, GroupDeleteAsyncAction } from 'C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Queries';
 // import 
 /**
  * GroupCUDButton Component

@@ -3,9 +3,9 @@ import { useParams } from "react-router"
 
 import { CreateDelayer, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared"
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared"
-import { ReadOnlyLargeCard } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Readonly/Pages/ReadOnlyLargeCard.jsx"
-import { GroupReadAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries"
-import { GroupPageNavbar } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Pages/GroupPageNavbar"
+import { ReadOnlyLargeCard } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Readonly/Pages/ReadOnlyLargeCard.jsx"
+import { GroupReadAsyncAction } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Queries"
+import { GroupPageNavbar } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Pages/GroupPageNavbar"
 
 /**
  * A page content component for displaying detailed information about an group entity.

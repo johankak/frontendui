@@ -49,7 +49,7 @@ export default defineConfig({
       "@hrbolek/uoisfrontend-admissions": path.resolve(__dirname, "../../packages/admissions/src"),
       "@hrbolek/uoisfrontend-requests": path.resolve(__dirname, "../../packages/requests/src"),
 
-      "@matejtresnak/provizorni_nazev_1" : path.resolve(__dirname, "../../packages/moje_knihovna/src")
+      "@johankak/provizorni_nazev_1" : path.resolve(__dirname, "../../packages/moje_knihovna/src")
     },
   },
 

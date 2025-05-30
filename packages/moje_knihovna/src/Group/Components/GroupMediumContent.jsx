@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { GroupMediumCard } from "./GroupMediumCard";
-import { GroupRolesReadAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupRolesReadAsyncAction.jsx";
+import { GroupRolesReadAsyncAction } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Queries/GroupRolesReadAsyncAction.jsx";
 
 /**
  * A component that displays medium-level content for a group entity.

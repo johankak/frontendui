@@ -1,5 +1,5 @@
 {
-  "name": "@matejtresnak/provizorni_nazev",
+  "name": "@johankak/provizorni_nazev",
   "private": true,
   "version": "0.5.0",
   "type": "module",
@@ -17,7 +17,7 @@
     "@hrbolek/uoisfrontend-shared": "*",
     "@hrbolek/uoisfrontend-ug": "*",
     "@hrbolek/uoisfrontend-ug2": "*",
-    "@matejtresnak/provizorni_nazev_1": "*",
+    "@johankak/provizorni_nazev_1": "*",
 
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",

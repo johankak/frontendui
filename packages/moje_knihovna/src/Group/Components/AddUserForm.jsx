@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import { ErrorHandler, LoadingSpinner, CreateDelayer } from "@hrbolek/uoisfrontend-shared";
 import { useAsyncAction, createAsyncGraphQLAction } from "@hrbolek/uoisfrontend-gql-shared";
-import { GroupMembershipInsertAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipInsertAsyncAction";
+import { GroupMembershipInsertAsyncAction } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipInsertAsyncAction";
 
 // GraphQL dotaz pro vyhledávání uživatelů podle vzoru
 const QueryUserAsyncAction = createAsyncGraphQLAction(`query QueryUser($pattern: String!) {
@@ -51,7 +51,7 @@ export const AddUserForm = ({ group }) => {
   const {
     error: insertError,
     loading: insertLoading,
-    fetch: insertUser,
+    fetch: insertMembership,
   } = useAsyncAction(
     GroupMembershipInsertAsyncAction,
     {},
@@ -66,7 +66,7 @@ export const AddUserForm = ({ group }) => {
         userId: user.id,
       };
 
-      const result = await insertUser(params);
+      const result = await insertMembership(params);
 
       if (result && !result.failed) {
         alert("Uživatel byl úspěšně přidán do skupiny");

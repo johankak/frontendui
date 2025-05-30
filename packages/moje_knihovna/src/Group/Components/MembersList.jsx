@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared";
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
-import { GroupMembershipDeleteAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipDeleteAsyncAction";
+import { GroupMembershipDeleteAsyncAction } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipDeleteAsyncAction";
 
 export const MembersList = ({ group }) => {
   const {

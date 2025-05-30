@@ -3,7 +3,7 @@ import { useParams } from "react-router"
 
 import { CreateDelayer, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared"
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared"
-import { StateMachineManagement, UserButton, UserData, UserLargeCard } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/User/Components"
+import { StateMachineManagement, UserButton, UserData, UserLargeCard } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/User/Components"
 import { UserReadAsyncAction } from "../Queries"
 import { UserPageNavbar } from "./UserPageNavbar"
 import { UserGroupsAttribute } from "../Vectors/UserGroupsAttribute"

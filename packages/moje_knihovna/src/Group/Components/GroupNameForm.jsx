@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Input, ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared";
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
-import { GroupUpdateAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupUpdateAsyncAction";
+import { GroupUpdateAsyncAction } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Queries/GroupUpdateAsyncAction";
 
 export const GroupNameForm = ({ group }) => {
   const [newGroupName, setNewGroupName] = useState("");

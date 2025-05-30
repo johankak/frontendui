@@ -2,8 +2,8 @@
 import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
 import { LeftColumn, MiddleColumn } from "@hrbolek/uoisfrontend-shared";
-import { GroupCardCapsule } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Components/GroupCardCapsule";
-import { GroupMediumCard } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Components/GroupMediumCard";
+import { GroupCardCapsule } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Components/GroupCardCapsule";
+import { GroupMediumCard } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Components/GroupMediumCard";
 
 export const ReadOnlyLargeCard = ({ group, children }) => {
   if (!group) return <div>Skupina nebyla nalezena.</div>;

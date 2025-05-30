@@ -3,12 +3,12 @@ import {
       RouterProvider
 } from "react-router-dom";
 
-import { GroupRouterSegment } from "@matejtresnak/provizorni_nazev_1";
-import { GroupPage } from "@matejtresnak/provizorni_nazev_1";
-import { DataGeneratorPage } from "@matejtresnak/provizorni_nazev_1";
-import { UserRouterSegment } from "@matejtresnak/provizorni_nazev_1";
-import { UserPage } from "@matejtresnak/provizorni_nazev_1";
-import { ReadOnlyPage } from "@matejtresnak/provizorni_nazev_1";
+import { GroupRouterSegment } from "@johankak/provizorni_nazev_1";
+import { GroupPage } from "@johankak/provizorni_nazev_1";
+import { DataGeneratorPage } from "@johankak/provizorni_nazev_1";
+import { UserRouterSegment } from "@johankak/provizorni_nazev_1";
+import { UserPage } from "@johankak/provizorni_nazev_1";
+import { ReadOnlyPage } from "@johankak/provizorni_nazev_1";
 
 // import { UserPage } from "@hrbolek/uoisfrontend-ug";
 // import { UserStudiesPage } from "@hrbolek/uoisfrontend-granting";

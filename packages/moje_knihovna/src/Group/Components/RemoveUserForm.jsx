@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { ErrorHandler, LoadingSpinner } from "@hrbolek/uoisfrontend-shared";
 import { useAsyncAction } from "@hrbolek/uoisfrontend-gql-shared";
-import { GroupMembershipDeleteAsyncAction } from "C:/Users/mates/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipDeleteAsyncAction";
+import { GroupMembershipDeleteAsyncAction } from "C:/Users/42060/frontendui/packages/moje_knihovna/src/Group/Queries/GroupMembershipDeleteAsyncAction";
 
 export const RemoveUserForm = ({ group }) => {
   const [selectedMembership, setSelectedMembership] = useState("");
